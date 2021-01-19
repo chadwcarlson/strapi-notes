@@ -126,19 +126,21 @@ When editing through the admin UI, Strapi writes a few files to the `api` mount 
 
 ```txt
 # app/api/article
-config/
-   routes.json
-controllers/
-   article.js
-documentation/
-   1.0.0/
-      article.json
-      overrides/
-models
-   article.js
-   article.settings.json
-services
-    article.js
+.
+└── article
+    ├── config
+    │   └── routes.json
+    ├── controllers
+    │   └── article.js
+    ├── documentation
+    │   └── 1.0.0
+    │       ├── article.json
+    │       └── overrides
+    ├── models
+    │   ├── article.js
+    │   └── article.settings.json
+    └── services
+        └── article.js
 ```
 
 ### `config`
@@ -292,3 +294,64 @@ module.exports = {};
 > - Content Types are written (from the admin UI) to named subdirectories on the mount `api` at runtime. This data is not merged into `master` on merges. 
 > - Once a Content Type is created, pieces of content data for that type are stored in the database (PostgreSQL in the template).
 > - Similar things will also be the case for defining Webhooks and custom components.
+
+So, in general, any data edited through the admin UI at runtime on a development branch will not end up in master. It will write to the current `api` mount on that environment, and to the current database. That means, if you actually want to merge a new Content Type, you will need to download the mount. 
+
+```bash
+$ platform mount:download -p <Project ID> -e <Env name> --mount api --target api
+```
+
+[In our template](https://github.com/platformsh-templates/strapi), the `api` subdirectory is already committed, so the `article` content type data will be added in the right place in the repository within `api`:
+
+```text
+.
+├── .editorconfig
+├── .env.example
+├── .eslintignore
+├── .eslintrc
+├── .git
+├── .gitignore
+├── .platform
+│   ├── routes.yaml
+│   └── services.yaml
+├── .platform.app.yaml
+├── README.md
+├── api
+│   └── article
+├── config
+│   ├── database.js
+│   ├── functions
+│   └── server.js
+├── extensions
+│   ├── .gitkeep
+│   └── documentation
+├── favicon.ico
+├── node_modules
+├── package-lock.json
+├── package.json
+├── public
+│   ├── robots.txt
+│   └── uploads
+└── yarn.lock
+```
+
+In `.platform.app.yaml`, we have the copy-paste juggle for mounts
+
+```yaml
+hooks:
+    build: |
+        # Download dependencies and build Strapi.
+        yarn
+        yarn build
+
+        # Local development will commit changes to subdirectories that will become mounts on
+        # Platform.sh and overwritten during deployments. To prevent that, set aside during builds.    
+        if [ -n "$(ls -A api)" ]; then
+            mkdir api-tmp && mv api/* api-tmp
+        fi
+    deploy: |
+        # Copy overrides back to where they need to be.   
+        if [ -n "$(ls -A api-tmp)" ]; then
+            cp -r api-tmp/* api
+        fi
+```
