@@ -1,6 +1,6 @@
 # strapi-notes
 
-- [Deploy on Platform.sh](#deploy-on-platformsh)
+- [Deploy on Platform.sh](#1-deploy-on-platformsh)
 - [Branch](#branch)
 - [Create content type (in admin UI) and it's fields](#create-content-type-in-admin-ui-and-its-fields)
 
