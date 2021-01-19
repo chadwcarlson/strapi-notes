@@ -5,7 +5,7 @@
 - [3. Create content type (in admin UI) and it's fields](#3-create-content-type-in-admin-ui-and-its-fields)
 - [4. Permissions](#4-permissions)
 - [5. Test](#5-test)
-- [6. What happened?](#6-what-happend)
+- [6. What happened?](#6-what-happened)
 
 ## 1. Deploy on Platform.sh
 
