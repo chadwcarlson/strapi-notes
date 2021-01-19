@@ -397,3 +397,5 @@ If we just enable public permissions without adding content, the response become
 ```
 
 Add and publish an article on Master, and you'll be all set with the same article on your production instance.
+
+[https://www.master-7rqtwti-gokaumanzz7p6.eu-3.platformsh.site/articles](https://www.master-7rqtwti-gokaumanzz7p6.eu-3.platformsh.site/articles)
