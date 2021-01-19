@@ -202,6 +202,8 @@ module.exports = {};
 
 ### `documentation`
 
+An OpenAPI specification is created for the `articles` content type. An `overrides` subdirectory is also included (to override meta information, such as linked site, author, etc.).
+
 ### `models`
 
 ```js
