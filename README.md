@@ -1,5 +1,9 @@
 # strapi-notes
 
+- [Deploy on Platform.sh](#deploy-on-platformsh)
+- [Branch](#branch)
+- [Create content type (in admin UI) and it's fields](#create-content-type-in-admin-ui-and-its-fields)
+
 ## 1. Deploy on Platform.sh
 
 After deploying the template, you will get a *production* instance of Strapi on the `master` environment. In production, you *cannot* create Content Types/Collections through the admin panel. You will need to create your admin user at this point. 
@@ -272,3 +276,9 @@ module.exports = {};
 
 module.exports = {};
 ```
+
+## What's this means for merging
+
+- Content Types are written (from the admin UI) to named subdirectories on the mount `api`. So this data is not merged into `master` on merges.
+- Once a Content Type is created, pieces of content data for that type are stored in the database (PostgreSQL in the template).
+- Similar things will also be the case for defining Webhooks and custom components.
