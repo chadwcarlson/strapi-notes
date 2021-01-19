@@ -1,14 +1,14 @@
 # strapi-notes
 
-1. Deploy on Platform.sh
+## 1. Deploy on Platform.sh
 
 After deploying the template, you will get a *production* instance of Strapi on the `master` environment. In production, you *cannot* create Content Types/Collections through the admin panel. You will need to create your admin user at this point. 
 
-2. Branch
+## 2. Branch
 
 On a new environment updates, we can create a new Content Type called "Articles", that will be available at `/articles`.
 
-3. Create content type (in admin UI) and it's fields
+## 3. Create content type (in admin UI) and it's fields
 
 - Display name: `article`
    - (Short text) `title`, Required
@@ -18,11 +18,11 @@ On a new environment updates, we can create a new Content Type called "Articles"
    
 Save (restarts the server), and then add an article to the type.
    
-4. Permissions
+## 4. Permissions
 
 New content types are restricted to the public by default. In Settings/Roles/Public, enable `find`, and `findone` for Article. Save and restart the server. 
 
-5. Test
+## 5. Test
 
 Now you can test the endpoint `/articles`:
 
@@ -107,7 +107,7 @@ Now you can test the endpoint `/articles`:
 
 As well as the single article endpoint using its id (1), `/articles/1`.
 
-6. What happened?
+## 6. What happened?
 
 When editing through the admin UI, Strapi writes a few files to the `api` mount in the container to define the new endpoint in a new folder `article`.
 
