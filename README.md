@@ -22,6 +22,7 @@
 - Strapi API endpoints are defined in an `api` subdirectory (included in the template). The admin UI allows you to create new content types (in `development`) at runtime, so `api` is defined as a mount for the template.
 - Merging Content Types isn't possible, since Content Type data is written to the `api` mount, and pieces of Content written to the database. 
 - Merging a tested Content Type into production means *reproducing* the API code written to `api` at runtime locally and committing that to the repo. Pieces of content data will still need to be added to the production database. 
+- All of these points for API endpoints also apply to [adding custom components and webhooks](https://github.com/platformsh-templates/strapi/blob/41f29a65f85f19e379d6764ab85b0c7c47508946/.platform.app.yaml#L23
 
 ## 1. Deploy on Platform.sh
 
