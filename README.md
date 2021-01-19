@@ -111,7 +111,7 @@ As well as the single article endpoint using its id (1), `/articles/1`.
 
 When editing through the admin UI, Strapi writes a few files to the `api` mount in the container to define the new endpoint in a new folder `article`.
 
-```
+```txt
 # app/api/article
 config/
    routes.json
@@ -126,4 +126,147 @@ models
    article.settings.json
 services
     article.js
+```
+
+### `config`
+
+```json
+# config/routes.json
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/articles",
+      "handler": "article.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/articles/count",
+      "handler": "article.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/articles/:id",
+      "handler": "article.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/articles",
+      "handler": "article.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/articles/:id",
+      "handler": "article.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/articles/:id",
+      "handler": "article.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
+```
+
+### `controller`
+
+```js
+# controller/article.js
+'use strict';
+
+/**
+ * Read the documentation (https://strapi.io/documentation/developer-docs/latest/concepts/controllers.html#core-controllers)
+ * to customize this controller
+ */
+
+module.exports = {};
+```
+
+### `documentation`
+
+### `models`
+
+```js
+# article.js
+'use strict';
+
+/**
+ * Read the documentation (https://strapi.io/documentation/developer-docs/latest/concepts/models.html#lifecycle-hooks)
+ * to customize this model
+ */
+
+module.exports = {};
+```
+
+```json
+# article.settings.json
+{
+  "kind": "collectionType",
+  "collectionName": "articles",
+  "info": {
+    "name": "article"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "richtext",
+      "required": true
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "files",
+        "images",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": true
+    },
+    "published_date": {
+      "type": "date",
+      "required": true
+    }
+  }
+}
+```
+
+### `services`
+
+```js
+# article.js
+'use strict';
+
+/**
+ * Read the documentation (https://strapi.io/documentation/developer-docs/latest/concepts/services.html#core-services)
+ * to customize this service
+ */
+
+module.exports = {};
 ```
