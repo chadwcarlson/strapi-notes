@@ -21,7 +21,7 @@
 - Strapi does not allow the creation of new Content Types (or Collections) in `production`, only in `development`.
 - Strapi API endpoints are defined in an `api` subdirectory (included in the template). The admin UI allows you to create new content types (in `development`) at runtime, so `api` is defined as a mount for the template.
 - Merging Content Types isn't possible, since Content Type data is written to the `api` mount, and pieces of Content written to the database. 
-- Merging a tested Content Type into production means *reproducing* the API code written to `api` at runtime locally and committing that to the repo. Pieces of content data will still need to be added to the production database. 
+- Merging a tested Content Type into production means *reproducing* the API code written to `api` at runtime locally and committing that to the repo. Pieces of content data will still need to be added to the production database. This can be done by creating new endpoints initially on a dev environment's admin UI and downloading that new endpoint locally, OR by using the Strapi CLI to create it (`npx strapi generate:api article`).
 - All of these points for API endpoints also apply to [adding custom components and webhooks](https://github.com/platformsh-templates/strapi/blob/41f29a65f85f19e379d6764ab85b0c7c47508946/.platform.app.yaml#L23)
 
 ## 1. Deploy on Platform.sh
@@ -310,6 +310,12 @@ So, in general, any data edited through the admin UI at runtime on a development
 
 ```bash
 $ platform mount:download -p <Project ID> -e <Env name> --mount api --target api
+```
+
+You can also use the Strapi CLI to create the endpoint:
+
+```bash
+$ npx strapi generate:api article
 ```
 
 [In our template](https://github.com/platformsh-templates/strapi), the `api` subdirectory is already committed, so the `article` content type data will be added in the right place in the repository within `api`:
