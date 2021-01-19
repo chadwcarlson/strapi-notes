@@ -1,5 +1,6 @@
 # strapi-notes
 
+- [0. Summary](#0-summary)
 - [1. Deploy on Platform.sh](#1-deploy-on-platformsh)
 - [2. Branch](#2-branch)
 - [3. Create content type (in admin UI) and it's fields](#3-create-content-type-in-admin-ui-and-its-fields)
@@ -12,6 +13,15 @@
    - [`models`](#models)
    - [`services`](#services)
 - [7. What this means for merging](#7-what-this-means-for-merging)
+
+## 0. Summary
+
+- Strapi has two running modes, `production` and `development`.
+- Our template is configured to run in `production` mode on Master, and in `development` on non-production environments.
+- Strapi does not allow the creation of new Content Types (or Collections) in `production`, only in `development`.
+- Strapi API endpoints are defined in an `api` subdirectory (included in the template). The admin UI allows you to create new content types (in `development`) at runtime, so `api` is defined as a mount for the template.
+- Merging Content Types isn't possible, since Content Type data is written to the `api` mount, and pieces of Content written to the database. 
+- Merging a tested Content Type into production means *reproducing* the API code written to `api` at runtime locally and committing that to the repo. Pieces of content data will still need to be added to the production database. 
 
 ## 1. Deploy on Platform.sh
 
@@ -291,7 +301,7 @@ module.exports = {};
 ## 7. What this means for merging
 
 > **Recap:**
-> - Content Types are written (from the admin UI) to named subdirectories on the mount `api` at runtime. This data is not merged into `master` on merges. 
+> - Content Types are written (from the admin UI) to named subdirectories on the mount `api` at runtime. This data is not merged into `master` on merges. Requesting `articles` on master post-merge will give the response `Not Found`.
 > - Once a Content Type is created, pieces of content data for that type are stored in the database (PostgreSQL in the template).
 > - Similar things will also be the case for defining Webhooks and custom components.
 
@@ -335,7 +345,7 @@ $ platform mount:download -p <Project ID> -e <Env name> --mount api --target api
 └── yarn.lock
 ```
 
-In `.platform.app.yaml`, we have the copy-paste juggle for mounts
+In the template's `.platform.app.yaml`, we have the copy-paste juggle already for mounts, which will place our now committed `articles` content type into the mount.
 
 ```yaml
 hooks:
@@ -343,7 +353,6 @@ hooks:
         # Download dependencies and build Strapi.
         yarn
         yarn build
-
         # Local development will commit changes to subdirectories that will become mounts on
         # Platform.sh and overwritten during deployments. To prevent that, set aside during builds.    
         if [ -n "$(ls -A api)" ]; then
@@ -355,3 +364,36 @@ hooks:
             cp -r api-tmp/* api
         fi
 ```
+
+So, we can commit our `api/articles` subdirectory, push and then merge.
+
+```bash
+$ git add . && git commit -m "Commit article Content Type." && git push origin updates
+...
+$ platform merge master
+```
+
+Now if we request `/articles` on Master, we get 
+
+```
+{"statusCode":403,"error":"Forbidden","message":"Forbidden"}
+```
+
+So we have the `/articles` Content Type, but:
+
+- There are no published Articles in that Content Type
+- Permissions are still locked for public requests
+
+We can then follow the previous steps to:
+
+- Add an Article
+- Publish that article
+- Enable Public permissions for `find` and `findone` on the `/articles` endpoint
+
+If we just enable public permissions without adding content, the response becomes empty:
+
+```
+[]
+```
+
+Add and publish an article on Master, and you'll be all set with the same article on your production instance.
