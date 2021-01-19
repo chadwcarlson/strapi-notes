@@ -11,7 +11,7 @@
    - [`documentation`](#documentation)
    - [`models`](#models)
    - [`services`](#services)
-- [7. What this means for merging](#what-this-means-for-merging)
+- [7. What this means for merging](#7-what-this-means-for-merging)
 
 ## 1. Deploy on Platform.sh
 
@@ -288,6 +288,7 @@ module.exports = {};
 
 ## 7. What this means for merging
 
-- Content Types are written (from the admin UI) to named subdirectories on the mount `api`. So this data is not merged into `master` on merges.
-- Once a Content Type is created, pieces of content data for that type are stored in the database (PostgreSQL in the template).
-- Similar things will also be the case for defining Webhooks and custom components.
+> **Recap:**
+> - Content Types are written (from the admin UI) to named subdirectories on the mount `api` at runtime. This data is not merged into `master` on merges. 
+> - Once a Content Type is created, pieces of content data for that type are stored in the database (PostgreSQL in the template).
+> - Similar things will also be the case for defining Webhooks and custom components.
