@@ -330,6 +330,19 @@ $ platform mount:download -p <Project ID> -e <Env name> --mount api --target api
 
 ├── api
 │   └── article
+│         ├── config
+│         │   └── routes.json
+│         ├── controllers
+│         │   └── article.js
+│         ├── documentation
+│         │   └── 1.0.0
+│         │       ├── article.json
+│         │       └── overrides
+│         ├── models
+│         │   ├── article.js
+│         │   └── article.settings.json
+│         └── services
+│             └── article.js
 
 ├── config
 │   ├── database.js
