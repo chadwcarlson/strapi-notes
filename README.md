@@ -327,8 +327,10 @@ $ platform mount:download -p <Project ID> -e <Env name> --mount api --target api
 │   └── services.yaml
 ├── .platform.app.yaml
 ├── README.md
+
 ├── api
 │   └── article
+
 ├── config
 │   ├── database.js
 │   ├── functions
